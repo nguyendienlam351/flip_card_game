@@ -26,6 +26,10 @@ const Home = ({ navigation }) => {
         navigation.navigate('PlayOnePlayer')
     }
 
+    const handleTwoPlayers = () => {
+        navigation.navigate('PlayTwoPlayers')
+    }
+
     useEffect(() => {
 
         const backHandler = BackHandler.addEventListener(
@@ -45,7 +49,7 @@ const Home = ({ navigation }) => {
                 <ModeButton title='One Player' image={one_player_icon}
                     onPress={handleOnePlayer} />
                 <ModeButton title='Two Players' image={two_players_icon}
-                    onPress={() => { }} />
+                    onPress={handleTwoPlayers} />
             </View>
             <TouchableOpacity style={styles.exit_button} onPress={handleExit}>
                 <Text style={styles.exit_text}>Exit</Text>

@@ -1,5 +1,6 @@
 import Home from "../screens/Home";
 import PlayOnePlayer from "../screens/PlayOnePlayer";
+import PlayTwoPlayers from "../screens/PlayTwoPlayers";
 
 export const Routes = [
     {
@@ -12,4 +13,9 @@ export const Routes = [
         component: PlayOnePlayer,
         options: { headerShown: false }
     },
+    {
+        name: 'PlayTwoPlayers',
+        component: PlayTwoPlayers,
+        options: { headerShown: false }
+    }
 ]

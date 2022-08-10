@@ -7,8 +7,7 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        backfaceVisibility: 'hidden',
-        borderRadius: wp(4),
+        backfaceVisibility: 'hidden'
     },
     flipCardFront: {
         backgroundColor: colors.secondary_variant,

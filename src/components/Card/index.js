@@ -3,7 +3,8 @@ import { Image, View, TouchableOpacity, Animated } from 'react-native';
 import { styles } from './styles';
 
 
-const Card = ({ item, handleSelected, isOpened, width, height, widthImage, heightImage }) => {
+const Card = ({
+    item, handleSelected, isOpened, width, height, widthImage, heightImage, borderRadius }) => {
     const { image } = item
     const animatedValue = useRef(new Animated.Value(0)).current;
     const currentValue = useRef(0);
@@ -75,18 +76,18 @@ const Card = ({ item, handleSelected, isOpened, width, height, widthImage, heigh
 
 
     return (
-        <TouchableOpacity style={[styles.container, { width: width, height: height }]}
+        <TouchableOpacity
             disabled={isOpened}
             onPress={() => handleSelected(item)}>
             <Animated.View style={[
                 styles.flipCard,
-                { width: width, height: height },
+                { width: width, height: height, borderRadius: borderRadius },
                 styles.flipCardFront,
                 frontAnimatedStyle,
                 { opacity: frontOpacity }]} />
             <Animated.View style={[
                 styles.flipCard,
-                { width: width, height: height },
+                { width: width, height: height, borderRadius: borderRadius },
                 styles.flipCardBack,
                 backAnimatedStyle,
                 { opacity: backOpacity }]}>

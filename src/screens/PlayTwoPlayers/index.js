@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, TouchableOpacity, View, Image, BackHandler } from "react-native";
+import { SafeAreaView, TouchableOpacity, View, Image, Text, BackHandler } from "react-native";
 import { styles } from "./styles";
 import Card from "../../components/Card";
 import { FlatGrid } from 'react-native-super-grid';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Timer from "../../components/Timer";
-import WinDialog from "../../components/WinDialog";
+import WinDialogTwoPlayers from "../../components/WinDialogTwoPlayers";
 import PauseDialog from '../../components/PauseDialog';
 import { shuffledList } from "../../utils/shuffle";
+
 
 const list = [
     {
@@ -39,6 +39,39 @@ const list = [
     },
     {
         image: require('../../static/images/cards/card_10.png')
+    },
+    {
+        image: require('../../static/images/cards/card_11.png')
+    },
+    {
+        image: require('../../static/images/cards/card_12.png')
+    },
+    {
+        image: require('../../static/images/cards/card_13.png')
+    },
+    {
+        image: require('../../static/images/cards/card_14.png')
+    },
+    {
+        image: require('../../static/images/cards/card_15.png')
+    },
+    {
+        image: require('../../static/images/cards/card_16.png')
+    },
+    {
+        image: require('../../static/images/cards/card_17.png')
+    },
+    {
+        image: require('../../static/images/cards/card_18.png')
+    },
+    {
+        image: require('../../static/images/cards/card_19.png')
+    },
+    {
+        image: require('../../static/images/cards/card_20.png')
+    },
+    {
+        image: require('../../static/images/cards/card_21.png')
     }
 ]
 
@@ -46,15 +79,19 @@ const pause_icon = require('../../static/images/icons/pause-button.png')
 
 const initList = [...list, ...list]
 
+const player_one = 0
+const player_two = 1
+
 const PlayOnePlayer = ({ navigation }) => {
     const [cardList, setCardList] = useState([])
     const [selectedFirst, setSelectedFirst] = useState(null)
     const [selectedSecond, setSelectedSecond] = useState(null)
 
-    const [time, setTime] = useState(0)
-    const [countMatched, setCountMatched] = useState(0)
-
     const [pauseDialog, setPauseDialog] = useState(false)
+    const [turn, setTurn] = useState(player_one)
+
+    const [scoreOne, setScoreOne] = useState(0)
+    const [scoreTwo, setScoreTwo] = useState(0)
 
     const handlePause = () => {
         setPauseDialog(preValue => !preValue)
@@ -79,9 +116,12 @@ const PlayOnePlayer = ({ navigation }) => {
         setCardList([...ramdomList])
         setSelectedFirst(null)
         setSelectedSecond(null)
-        setTime(0)
-        setCountMatched(0)
+
         setPauseDialog(false)
+        setTurn(player_one)
+
+        setScoreOne(0)
+        setScoreTwo(0)
     }
 
     useEffect(() => {
@@ -96,7 +136,10 @@ const PlayOnePlayer = ({ navigation }) => {
                         }
                     }))
 
-                    setCountMatched(preValue => preValue + 2)
+                    turn == player_one ? setScoreOne(preValue => preValue + 1) : setScoreTwo(preValue => preValue + 1)
+                }
+                else {
+                    setTurn(preValue => preValue != player_one ? player_one : player_two)
                 }
                 setSelectedFirst(null)
                 setSelectedSecond(null)
@@ -117,32 +160,42 @@ const PlayOnePlayer = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <WinDialog visible={countMatched == cardList.length} time={time}
+            <WinDialogTwoPlayers visible={(scoreOne + scoreTwo) * 2 == cardList.length}
+                scoreOne={scoreOne} scoreTwo={scoreTwo}
                 handleReplay={newGame} handleExit={handleExit} />
-            <PauseDialog visible={pauseDialog} time={time}
+            <PauseDialog visible={pauseDialog}
                 handleContinue={handlePause} handleReplay={newGame} handleExit={handleExit} />
-            <View style={styles.top_view}>
-                <Timer time={time} setTime={setTime} pause={countMatched == cardList.length || pauseDialog} />
+
+            <View style={[styles.top_view]}>
+                <View style={[styles.score_view, styles.score_player_one]}>
+                    {turn != player_one && <View style={styles.blur_view} />}
+                    <Text style={styles.text}>{scoreOne}</Text>
+                </View>
 
                 <TouchableOpacity style={styles.pause_button} onPress={handlePause}>
                     <Image style={styles.image} source={pause_icon} />
                 </TouchableOpacity>
+
+                <View style={[styles.score_view, styles.score_player_two]}>
+                    {turn != player_two && <View style={styles.blur_view} />}
+                    <Text style={styles.text}>{scoreTwo}</Text>
+                </View>
             </View>
 
-            <View>
+            <View >
                 <FlatGrid
-                    itemDimension={wp(21)}
+                    itemDimension={wp(14.3)}
                     data={cardList}
-                    spacing={wp(1)}
+                    spacing={wp(.5)}
                     renderItem={({ item }) => (
                         <Card item={item}
                             handleSelected={handleSelected}
                             isOpened={item == selectedFirst || item == selectedSecond || item.isMatched}
-                            width={wp(21)}
-                            height={hp(16)}
-                            widthImage={wp(13)}
-                            heightImage={wp(13)}
-                            borderRadius={wp(4)} />
+                            width={wp(14.3)}
+                            height={hp(12)}
+                            widthImage={wp(9.5)}
+                            heightImage={wp(9.5)}
+                            borderRadius={wp(3)} />
                     )}
                 />
             </View>
