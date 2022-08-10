@@ -128,6 +128,8 @@ const PlayOnePlayer = ({ navigation }) => {
         if (selectedFirst && selectedSecond) {
             setTimeout(() => {
                 if (selectedFirst.image == selectedSecond.image) {
+                    turn == player_one ? setScoreOne(preValue => preValue + 1) : setScoreTwo(preValue => preValue + 1)
+
                     setCardList(preList => preList.map((item) => {
                         if (item == selectedFirst || item == selectedSecond) {
                             return { ...item, isMatched: true }
@@ -135,8 +137,6 @@ const PlayOnePlayer = ({ navigation }) => {
                             return item
                         }
                     }))
-
-                    turn == player_one ? setScoreOne(preValue => preValue + 1) : setScoreTwo(preValue => preValue + 1)
                 }
                 else {
                     setTurn(preValue => preValue != player_one ? player_one : player_two)
@@ -160,7 +160,7 @@ const PlayOnePlayer = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <WinDialogTwoPlayers visible={(scoreOne + scoreTwo) * 2 == cardList.length}
+            <WinDialogTwoPlayers visible={(scoreOne + scoreTwo) * 2 == cardList.length && cardList.length != 0}
                 scoreOne={scoreOne} scoreTwo={scoreTwo}
                 handleReplay={newGame} handleExit={handleExit} />
             <PauseDialog visible={pauseDialog}

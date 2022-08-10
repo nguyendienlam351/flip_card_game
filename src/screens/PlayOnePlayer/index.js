@@ -88,6 +88,8 @@ const PlayOnePlayer = ({ navigation }) => {
         if (selectedFirst && selectedSecond) {
             setTimeout(() => {
                 if (selectedFirst.image == selectedSecond.image) {
+                    setCountMatched(preValue => preValue + 2)
+
                     setCardList(preList => preList.map((item) => {
                         if (item == selectedFirst || item == selectedSecond) {
                             return { ...item, isMatched: true }
@@ -95,8 +97,6 @@ const PlayOnePlayer = ({ navigation }) => {
                             return item
                         }
                     }))
-
-                    setCountMatched(preValue => preValue + 2)
                 }
                 setSelectedFirst(null)
                 setSelectedSecond(null)
@@ -117,7 +117,7 @@ const PlayOnePlayer = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <WinDialog visible={countMatched == cardList.length} time={time}
+            <WinDialog visible={countMatched == cardList.length && cardList.length != 0} time={time}
                 handleReplay={newGame} handleExit={handleExit} />
             <PauseDialog visible={pauseDialog} time={time}
                 handleContinue={handlePause} handleReplay={newGame} handleExit={handleExit} />
